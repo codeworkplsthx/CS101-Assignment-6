@@ -9,7 +9,7 @@
  Graham, D.
  
  
- d
+ 
 Acknolwedgements:
  
 Dr. Hovenmeyer for his graphics library.
@@ -44,6 +44,7 @@ Dr. Hovenmeyer for his graphics library.
 
 #include <stdlib.h>
 #include <time.h>
+#include <algorithm>
 #include "Console.h"
 
 
@@ -51,40 +52,35 @@ Dr. Hovenmeyer for his graphics library.
 #define FPS 10
 #define SNAKE_DEFAULT_X 14
 #define SNAKE_DEFAULT_Y 7
-#define SNAKE_DEFAULT_N_SEG 5
 #define SCREEN_WIDTH 82
-#define SCREEN_HEIGHT 24
+#define SCREEN_HEIGHT 23
 #define LEFT -1
 #define RIGHT 1
 #define UP -1
 #define DOWN 1
+#define MAX_SEGMENTS 100
+
 
 // TODO: define other struct types, e.g., struct Point, struct Snake
+
+
 
 struct Point {
     int x, y;
     
 };
 
-struct Vector2d {
-    
-    int x, y;
-};
-
 struct Snake {
     
-    struct Point head;
-    struct Point tail;
-    int body;
-    struct Vector2d direction;
-    
+    struct Point segments[MAX_SEGMENTS];
+    int n_segments;
+    int dir;
 };
 
 struct Scene {
     
     struct Snake snake;
-
-    
+   
     
 };
 
@@ -93,7 +89,6 @@ struct Scene {
 
 void point_init(struct Point *p, int x, int y);
 
-void snake_init(struct Scene *s);
 void snake_append_segment(struct Snake *snake, int x, int y);
 void snake_remove_tail(struct Snake *snake);
 struct Point snake_get_head(const struct Snake *snake);
@@ -127,41 +122,40 @@ void scene_init(struct Scene *s) {
     srand(time(0));
     
     
-    snake_init(s);
+    s->snake.n_segments = 8;
+    s->snake.dir = 1;
     
-    
-}
-void snake_init(struct Scene *s)
-{
-    s->snake.body = SNAKE_DEFAULT_N_SEG;
-    s->snake.head.x = SNAKE_DEFAULT_X;
-    s->snake.head.y = SNAKE_DEFAULT_Y;
-    
-    s->snake.tail.x = s->snake.head.x - s->snake.body;
-    s->snake.direction.x = 1;
-    s->snake.direction.y = 0;
     
     
 }
+void point_init(struct Point *p, int x, int y) {
+    p->x = x;
+    p->y = y;
+    
+}
+
 void scene_render(const struct Scene *s) {
     // TODO: add your code
     
-    int tail = s->snake.tail.x;
-    int head = s->snake.head.x;
+      cons_clear_screen();
     
-    cons_clear_screen();
-    
-    for (int i = tail; i < head; i++)
+    for (unsigned i=0;i < s->snake.n_segments;i++)
     {
-        //snake's head
-        if (i == head-1)
+        if (i == s->snake.n_segments-1)
             cons_printw("<");
-        
-        //add color change here
+       
         else
             cons_printw("*");
         
     }
+    
+  
+    
+    
+    
+    
+    //TODO: add movement
+    
     //TODO: move cursor to bottom right
     
 }
@@ -173,23 +167,13 @@ int scene_update(struct Scene *s) {
     
    
     //update direction
-    switch (key) {
-            
-        case RIGHT_ARROW:
-            s->snake.direction.x = RIGHT;
-        
-        case LEFT_ARROW:
-            s->snake.direction.x = LEFT;
-        
-        case UP_ARROW:
-            s->snake.direction.y = UP;
-            
-        case DOWN_ARROW:
-            s->snake.direction.y = DOWN;
-            
-        default:
-            break;
+     s->snake.segments[0] = " ";
+    
+    for (unsigned int i = 0;i < s->snake.n_segments;i++)
+    {
+        s->snake.segments[i] ==
     }
+    s->snake.segments[
     
     //quit
     if (key == KEY_Q)
