@@ -44,7 +44,6 @@ Dr. Hovenmeyer for his graphics library.
 
 #include <stdlib.h>
 #include <time.h>
-#include <algorithm>
 #include "Console.h"
 
 
@@ -167,13 +166,9 @@ int scene_update(struct Scene *s) {
     
    
     //update direction
-     s->snake.segments[0] = " ";
+
     
-    for (unsigned int i = 0;i < s->snake.n_segments;i++)
-    {
-        s->snake.segments[i] ==
-    }
-    s->snake.segments[
+   
     
     //quit
     if (key == KEY_Q)
